@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الدرس الأول - الأعداد الصحيحة والقيمة المطلقة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+      --primary: #2F80ED;
+      --primary-dark: #1366D6;
+      --primary-light: #EAF4FF;
+      --primary-accent: #56CCF2;
+      --text-main: #1F2937;
+      --text-muted: #4B6A8A;
+      --card-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.97) 0%, rgba(234, 244, 255, 0.80) 100%);
+      --shadow-sm: 0 4px 6px -1px rgba(47, 128, 237, 0.06);
+      --shadow-md: 0 15px 35px -5px rgba(19, 102, 214, 0.10);
+      --shadow-hover: 0 30px 60px -15px rgba(19, 102, 214, 0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to bottom, #EAF4FF 0%, #ffffff 60%, #EAF4FF 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 40px 20px 70px;
+  }
+
+  .top-bar{
+      max-width:1200px; margin:0 auto 10px;
+      display:flex; align-items:center; justify-content:space-between;
+  }
+  .back-link{
+      display:flex; align-items:center; gap:8px;
+      text-decoration:none; color:var(--primary-dark);
+      font-weight:800; font-size:.95rem;
+      background:#fff; padding:9px 18px; border-radius:100px;
+      box-shadow:var(--shadow-sm); border:1px solid rgba(47,128,237,.12);
+      transition:all .25s ease;
+  }
+  .back-link:hover{ background:var(--primary); color:#fff; }
+  .back-link svg{ width:18px; height:18px; }
+
+  .page-header{ text-align:center; margin: 20px 0 45px; }
+  .lesson-tag{
+      display:inline-block; font-size:.8rem; font-weight:800;
+      color:var(--primary-dark); background:var(--primary-light);
+      padding:5px 16px; border-radius:20px; margin-bottom:12px;
+  }
+  .page-title{ font-size: 2rem; font-weight: 900; color: var(--text-main); }
+
+  .section-block{ max-width:1200px; margin:0 auto 55px; }
+  .section-title{
+      display:flex; align-items:center; gap:14px;
+      font-size:1.4rem; font-weight:900; color:var(--text-main);
+      margin-bottom:26px;
+  }
+  .section-title .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: var(--primary);
+      box-shadow: 0 0 0 5px var(--primary-light);
+  }
+  .section-title::after{
+      content:''; flex:1; height:2px;
+      background:linear-gradient(to left, rgba(47,128,237,.35), transparent);
+  }
+
+  .goal-label{
+      font-weight:800; font-size:1.05rem; color:var(--primary-dark);
+      margin: 6px 0 16px; padding-inline-start:2px;
+      display:flex; align-items:center; gap:10px;
+  }
+  .goal-label .num{
+      width:28px; height:28px; border-radius:50%;
+      background:var(--primary); color:#fff;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.85rem; font-weight:900;
+  }
+
+  .cards-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 26px;
+      margin-bottom: 34px;
+  }
+  .cards-grid.single{ grid-template-columns: minmax(260px, 420px); justify-content:center; margin: 0 auto; }
+
+  .game-card {
+      background: var(--card-bg);
+      border-radius: 26px;
+      padding: 30px 22px 26px;
+      text-align: center;
+      text-decoration:none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+      transition: all 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+      position: relative;
+      border-top: 2px solid rgba(255, 255, 255, 0.95);
+      border-left: 2px solid rgba(255, 255, 255, 0.95);
+      border-right: 1px solid rgba(47, 128, 237, 0.12);
+      border-bottom: 1px solid rgba(47, 128, 237, 0.12);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      overflow: hidden;
+      opacity:0; transform: translateY(30px);
+      animation: fadeInUp .6s ease-out forwards;
+  }
+  .cards-grid .game-card:nth-child(1){ animation-delay:.05s; }
+  .cards-grid .game-card:nth-child(2){ animation-delay:.15s; }
+  @keyframes fadeInUp{ from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
+
+  .game-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 50% 0%, var(--theme-color-light) 0%, transparent 70%);
+      opacity: 0; transition: opacity 0.5s ease; z-index: 0; pointer-events:none;
+  }
+  .game-card:hover{ transform: translateY(-10px) scale(1.015); box-shadow: var(--shadow-hover); }
+  .game-card:hover::before{ opacity:1; }
+
+  .icon-wrapper{ position:relative; z-index:1; animation: floatIcon 6s ease-in-out infinite; }
+  @keyframes floatIcon{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+
+  .icon-box{
+      width: 96px; height: 96px; border-radius: 26px;
+      display:flex; justify-content:center; align-items:center;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, var(--theme-bg-1), var(--theme-bg-2));
+      box-shadow: inset 0 4px 8px rgba(255,255,255,.9), 0 12px 22px -6px var(--theme-color-shadow);
+      transition: all .45s cubic-bezier(0.2,0.8,0.2,1);
+      border: 2px solid rgba(255,255,255,.6);
+  }
+  .icon-box svg{ width:66px; height:66px; filter: drop-shadow(0 6px 10px rgba(0,0,0,.15)); transition: all .45s cubic-bezier(0.2,0.8,0.2,1); }
+  .game-card:hover .icon-box{ transform: scale(1.06) rotate(-3deg); border-radius:30px; }
+  .game-card:hover .icon-box svg{ transform: scale(1.1); }
+
+  .card-badge{
+      position:relative; z-index:1;
+      font-size:.72rem; font-weight:800;
+      color: var(--theme-color);
+      background: var(--theme-color-light);
+      padding:3px 12px; border-radius:20px;
+      margin-bottom:10px;
+  }
+  .game-title{ position:relative; z-index:1; font-size:1.15rem; font-weight:900; color:var(--text-main); margin-bottom:8px; transition:color .3s ease; }
+  .game-card:hover .game-title{ color:var(--primary); }
+  .game-desc{ position:relative; z-index:1; font-size:.88rem; color:var(--text-muted); font-weight:600; line-height:1.55; flex-grow:1; margin-bottom:20px; }
+
+  .action-btn{
+      position:relative; z-index:1;
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      font-weight:800; font-size:.98rem;
+      background-color: var(--primary);
+      color:#fff;
+      padding:12px 26px; border-radius:100px;
+      width:100%;
+      transition: all .4s cubic-bezier(0.2,0.8,0.2,1);
+      box-shadow: 0 8px 16px -5px rgba(47,128,237,.45);
+      overflow:hidden;
+  }
+  .action-btn::after{
+      content:''; position:absolute; top:0; left:-100%; width:50%; height:100%;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,.3) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-25deg); transition:left .6s ease;
+  }
+  .action-btn svg{ width:18px; height:18px; fill:currentColor; }
+  .game-card:hover .action-btn{ background-color:var(--primary-dark); box-shadow:0 12px 20px -5px rgba(47,128,237,.55); }
+  .game-card:hover .action-btn::after{ left:200%; }
+
+  /* بطاقة التعلم السابق - بدون رابط فعلي */
+  .prior-card{ cursor:default; }
+  .prior-card .action-btn{ background:#94a3b8; box-shadow:none; cursor:default; }
+  .prior-card:hover .action-btn{ background:#94a3b8; }
+  .prior-card:hover .action-btn::after{ left:-100%; }
+
+  @media (max-width:768px){
+      .page-title{ font-size:1.5rem; }
+      .cards-grid{ grid-template-columns:1fr; max-width:420px; margin:0 auto 34px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="top-bar">
+      <a href="index-grade6-v3.html" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          <span>العودة للفهرس</span>
+      </a>
+  </div>
+
+  <div class="page-header">
+      <div class="lesson-tag">الوحدة 1 - الدرس 1</div>
+      <h1 class="page-title">الأعداد الصحيحة والقيمة المطلقة</h1>
+  </div>
+
+  <!-- التعلم السابق -->
+  <div class="section-block">
+      <div class="section-title"><span class="dot"></span><span>التعلم السابق</span></div>
+      <div class="cards-grid single">
+          <div class="game-card prior-card" style="--theme-color:#f59e0b; --theme-color-shadow:rgba(245,158,11,0.35); --theme-color-light:rgba(245,158,11,0.15); --theme-bg-1:#fffbeb; --theme-bg-2:#fde68a;">
+              <div class="icon-wrapper">
+                  <div class="icon-box">
+                      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <defs><linearGradient id="bookG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs>
+                          <path d="M50 24 C42 18 26 16 16 20 V72 C26 68 42 70 50 76 C58 70 74 68 84 72 V20 C74 16 58 18 50 24 Z" fill="url(#bookG)" stroke="#78350f" stroke-width="2"/>
+                          <line x1="50" y1="24" x2="50" y2="76" stroke="#78350f" stroke-width="1.5"/>
+                          <path d="M24 32 H42 M24 40 H42" stroke="#fff7ed" stroke-width="2.5" stroke-linecap="round"/>
+                          <path d="M58 32 H76 M58 40 H76" stroke="#fff7ed" stroke-width="2.5" stroke-linecap="round"/>
+                      </svg>
+                  </div>
+              </div>
+              <span class="card-badge">مراجعة</span>
+              <h2 class="game-title">راجع ما تعلمته سابقًا</h2>
+              <p class="game-desc">لمحة سريعة عن المفاهيم الأساسية التي سيبنى عليها هذا الدرس قبل البدء بالتدريبات.</p>
+              <div class="action-btn"><span>قريبًا</span></div>
+          </div>
+      </div>
+  </div>
+
+  <!-- التدريبات التفاعلية -->
+  <div class="section-block">
+      <div class="section-title"><span class="dot"></span><span>التدريبات التفاعلية</span></div>
+
+      <div class="goal-label"><span class="num">1</span><span>الهدف الأول</span></div>
+      <div class="cards-grid">
+          <a href="panda-u1-l1.html" class="game-card" style="--theme-color:#16a34a; --theme-color-shadow:rgba(22,163,74,0.35); --theme-color-light:rgba(22,163,74,0.15); --theme-bg-1:#f0fdf4; --theme-bg-2:#bbf7d0;">
+              <div class="icon-wrapper">
+                  <div class="icon-box">
+                      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <defs>
+                              <linearGradient id="pandaBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#bbf7d0"/><stop offset="100%" stop-color="#16a34a"/></linearGradient>
+                          </defs>
+                          <rect x="0" y="0" width="100" height="100" rx="18" fill="url(#pandaBg)" opacity="0.18"/>
+                          <ellipse cx="27" cy="28" rx="12" ry="12" fill="#1f2937"/>
+                          <ellipse cx="73" cy="28" rx="12" ry="12" fill="#1f2937"/>
+                          <ellipse cx="50" cy="52" rx="34" ry="30" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+                          <ellipse cx="33" cy="50" rx="9" ry="11" fill="#1f2937"/>
+                          <ellipse cx="67" cy="50" rx="9" ry="11" fill="#1f2937"/>
+                          <circle cx="34" cy="52" r="3.4" fill="#ffffff"/>
+                          <circle cx="68" cy="52" r="3.4" fill="#ffffff"/>
+                          <circle cx="35" cy="53" r="1.6" fill="#1a1a2e"/>
+                          <circle cx="69" cy="53" r="1.6" fill="#1a1a2e"/>
+                          <ellipse cx="50" cy="66" rx="7" ry="5.5" fill="#1f2937"/>
+                          <path d="M 50 71 Q 46 76 42 73 M 50 71 Q 54 76 58 73" stroke="#1f2937" stroke-width="2" fill="none" stroke-linecap="round"/>
+                          <path d="M 20 78 Q 50 95 80 78" stroke="#16a34a" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.7"/>
+                      </svg>
+                  </div>
+              </div>
+              <span class="card-badge">نشاط جماعي</span>
+              <h2 class="game-title">الباندا المتسابق</h2>
+              <p class="game-desc">نشاط جماعي تفاعلي لتعزيز مفهوم الهدف الأول من خلال المنافسة الممتعة.</p>
+              <div class="action-btn"><span>ابدأ النشاط</span><svg viewBox="0 0 24 24"><path d="M20 12l-8-8v16l8-8z"/></svg></div>
+          </a>
+
+          <a href="E-u1-l1.html" class="game-card" style="--theme-color:#2563eb; --theme-color-shadow:rgba(37,99,235,0.35); --theme-color-light:rgba(37,99,235,0.15); --theme-bg-1:#eff6ff; --theme-bg-2:#bfdbfe;">
+              <div class="icon-wrapper">
+                  <div class="icon-box">
+                      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <defs>
+                              <linearGradient id="rocketBody1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#94a3b8"/></linearGradient>
+                              <linearGradient id="rocketFin1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+                              <linearGradient id="flameGrad1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#ef4444"/></linearGradient>
+                              <linearGradient id="windowGrad1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#bae6fd"/><stop offset="100%" stop-color="#0284c7"/></linearGradient>
+                          </defs>
+                          <path d="M 40 70 Q 50 100 60 70 Q 50 80 40 70 Z" fill="url(#flameGrad1)"/>
+                          <path d="M 45 70 Q 50 85 55 70 Z" fill="#fef08a"/>
+                          <path d="M 35 50 L 18 75 L 35 70 Z" fill="url(#rocketFin1)" stroke="#1e3a8a" stroke-width="1"/>
+                          <path d="M 65 50 L 82 75 L 65 70 Z" fill="url(#rocketFin1)" stroke="#1e3a8a" stroke-width="1"/>
+                          <path d="M 50 12 C 70 35 65 75 50 75 C 35 75 30 35 50 12 Z" fill="url(#rocketBody1)" stroke="#64748b" stroke-width="1.5"/>
+                          <path d="M 48 65 L 52 65 L 52 82 L 48 82 Z" fill="url(#rocketFin1)"/>
+                          <path d="M 50 12 C 57 19 59.5 27 60 30 L 40 30 C 40.5 27 43 19 50 12 Z" fill="url(#rocketFin1)"/>
+                          <circle cx="50" cy="45" r="9" fill="url(#windowGrad1)" stroke="#cbd5e1" stroke-width="2"/>
+                          <path d="M 46 41 A 5 5 0 0 1 52 40" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                      </svg>
+                  </div>
+              </div>
+              <span class="card-badge">نشاط فردي</span>
+              <h2 class="game-title">المركبة الفضائية</h2>
+              <p class="game-desc">نشاط فردي لتطبيق الهدف الأول بشكل مستقل وقياس الفهم الشخصي.</p>
+              <div class="action-btn"><span>ابدأ النشاط</span><svg viewBox="0 0 24 24"><path d="M20 12l-8-8v16l8-8z"/></svg></div>
+          </a>
+      </div>
+
+      <div class="goal-label"><span class="num">2</span><span>الهدف الثاني</span></div>
+      <div class="cards-grid">
+          <a href="Alice-u1-l1.html" class="game-card" style="--theme-color:#c026d3; --theme-color-shadow:rgba(192,38,211,0.35); --theme-color-light:rgba(192,38,211,0.15); --theme-bg-1:#fdf4ff; --theme-bg-2:#f5d0fe;">
+              <div class="icon-wrapper">
+                  <div class="icon-box">
+                      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <defs>
+                              <linearGradient id="wonderDoorGrad" x1="0" y1="0" x2="0" y2="1">
+                                  <stop offset="0%" stop-color="#f0abfc"/>
+                                  <stop offset="55%" stop-color="#d946ef"/>
+                                  <stop offset="100%" stop-color="#a21caf"/>
+                              </linearGradient>
+                              <linearGradient id="wonderDoorShine" x1="0" y1="0" x2="1" y2="0">
+                                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.4"/>
+                                  <stop offset="45%" stop-color="#ffffff" stop-opacity="0"/>
+                              </linearGradient>
+                          </defs>
+                          <circle cx="50" cy="50" r="44" fill="#ffffff" opacity="0.10"/>
+                          <ellipse cx="50" cy="92" rx="24" ry="4" fill="#6b21a8" opacity="0.18"/>
+                          <ellipse cx="39" cy="13" rx="4.8" ry="13" fill="#f9a8d4" stroke="#831843" stroke-width="1.3" transform="rotate(-20 39 13)"/>
+                          <ellipse cx="39" cy="14" rx="2.1" ry="9" fill="#fce7f3" transform="rotate(-20 39 14)"/>
+                          <ellipse cx="61" cy="13" rx="4.8" ry="13" fill="#f9a8d4" stroke="#831843" stroke-width="1.3" transform="rotate(20 61 13)"/>
+                          <ellipse cx="61" cy="14" rx="2.1" ry="9" fill="#fce7f3" transform="rotate(20 61 14)"/>
+                          <path d="M 32 92 L 32 50 C 32 26 39 13 50 13 C 61 13 68 26 68 50 L 68 92 Z" fill="url(#wonderDoorGrad)" stroke="#6b21a8" stroke-width="2.5" stroke-linejoin="round"/>
+                          <path d="M 38 88 L 38 51 C 38 32 43 21 50 21 C 57 21 62 32 62 51 L 62 88 Z" fill="none" stroke="#7e22ce" stroke-width="1.5" opacity="0.55"/>
+                          <path d="M 34 88 L 34 50 C 34 28 39 16 46 14 C 40 20 37 32 37 50 L 37 88 Z" fill="url(#wonderDoorShine)"/>
+                          <path d="M 50 78 C 47 74 41 75 41 80 C 41 84 46 87 50 90 C 54 87 59 84 59 80 C 59 75 53 74 50 78 Z" fill="#fbcfe8" opacity="0.9"/>
+                          <circle cx="50" cy="56" r="6" fill="#fde047" stroke="#a16207" stroke-width="1"/>
+                          <path d="M 47.3 59 L 52.7 59 L 51 70 L 49 70 Z" fill="#fde047" stroke="#a16207" stroke-width="1"/>
+                          <path d="M 17 30 L 19 35 L 24 37 L 19 39 L 17 44 L 15 39 L 10 37 L 15 35 Z" fill="#fde047"/>
+                          <path d="M 85 55 L 86.5 58.5 L 90 60 L 86.5 61.5 L 85 65 L 83.5 61.5 L 80 60 L 83.5 58.5 Z" fill="#fde047"/>
+                          <circle cx="80" cy="28" r="2.3" fill="#fde047"/>
+                          <circle cx="22" cy="60" r="1.8" fill="#fde047"/>
+                      </svg>
+                  </div>
+              </div>
+              <span class="card-badge">نشاط جماعي</span>
+              <h2 class="game-title">أليس وبلاد العجائب</h2>
+              <p class="game-desc">نشاط جماعي تفاعلي لتحقيق الهدف الثاني من خلال قصة ممتعة وأسئلة تفاعلية.</p>
+              <div class="action-btn"><span>ابدأ النشاط</span><svg viewBox="0 0 24 24"><path d="M20 12l-8-8v16l8-8z"/></svg></div>
+          </a>
+
+          <a href="Ai-u1-l1.html" class="game-card" style="--theme-color:#059669; --theme-color-shadow:rgba(5,150,105,0.35); --theme-color-light:rgba(5,150,105,0.15); --theme-bg-1:#f0fffe; --theme-bg-2:#e0f2f1;">
+              <div class="icon-wrapper">
+                  <div class="icon-box">
+                      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <defs><linearGradient id="aiG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#047857"/></linearGradient></defs>
+                          <rect x="30" y="20" width="40" height="34" rx="8" fill="url(#aiG)" stroke="#065f46" stroke-width="2"/>
+                          <circle cx="41" cy="36" r="4" fill="#fff"/>
+                          <circle cx="59" cy="36" r="4" fill="#fff"/>
+                          <rect x="46" y="10" width="8" height="12" rx="3" fill="url(#aiG)" stroke="#065f46" stroke-width="2"/>
+                          <path d="M30 62 C30 54 70 54 70 62 V78 C70 84 30 84 30 78 Z" fill="#6ee7b7" stroke="#065f46" stroke-width="2"/>
+                          <path d="M42 68 h16" stroke="#065f46" stroke-width="2.5" stroke-linecap="round"/>
+                      </svg>
+                  </div>
+              </div>
+              <span class="card-badge">نشاط تكيفي</span>
+              <h2 class="game-title">التدريب التكيفي</h2>
+              <p class="game-desc">أسئلة تتكيف مع مستوى الطالب تلقائيًا لتعزيز إتقان الهدف الثاني.</p>
+              <div class="action-btn"><span>ابدأ النشاط</span><svg viewBox="0 0 24 24"><path d="M20 12l-8-8v16l8-8z"/></svg></div>
+          </a>
+      </div>
+  </div>
+
+  <!-- تقويم ختامي -->
+  <div class="section-block">
+      <div class="section-title"><span class="dot"></span><span>تقويم ختامي</span></div>
+      <div class="cards-grid single">
+          <a href="A2-u1-l1.html" class="game-card" style="--theme-color:#dc2626; --theme-color-shadow:rgba(220,38,38,0.35); --theme-color-light:rgba(220,38,38,0.15); --theme-bg-1:#fef2f2; --theme-bg-2:#fecaca;">
+              <div class="icon-wrapper">
+                  <div class="icon-box">
+                      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <defs><linearGradient id="trophyG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs>
+                          <path d="M34 22 H66 V44 C66 56 58 64 50 64 C42 64 34 56 34 44 Z" fill="url(#trophyG)" stroke="#78350f" stroke-width="2"/>
+                          <path d="M34 26 H22 C22 40 28 46 34 46" fill="none" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>
+                          <path d="M66 26 H78 C78 40 72 46 66 46" fill="none" stroke="#78350f" stroke-width="3" stroke-linecap="round"/>
+                          <rect x="44" y="64" width="12" height="12" fill="#d97706"/>
+                          <rect x="34" y="76" width="32" height="8" rx="3" fill="#92400e"/>
+                      </svg>
+                  </div>
+              </div>
+              <span class="card-badge">مسابقة</span>
+              <h2 class="game-title">مسابقة ختامية</h2>
+              <p class="game-desc">مسابقة شاملة لتقييم إتقان الطالب لجميع أهداف الدرس الأول.</p>
+              <div class="action-btn"><span>ابدأ المسابقة</span><svg viewBox="0 0 24 24"><path d="M20 12l-8-8v16l8-8z"/></svg></div>
+          </a>
+      </div>
+  </div>
+
+</body>
+</html>
