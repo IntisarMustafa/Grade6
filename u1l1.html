@@ -170,12 +170,6 @@
   .game-card:hover .action-btn{ background-color:var(--primary-dark); box-shadow:0 12px 20px -5px rgba(47,128,237,.55); }
   .game-card:hover .action-btn::after{ left:200%; }
 
-  /* بطاقة التعلم السابق - بدون رابط فعلي */
-  .prior-card{ cursor:default; }
-  .prior-card .action-btn{ background:#94a3b8; box-shadow:none; cursor:default; }
-  .prior-card:hover .action-btn{ background:#94a3b8; }
-  .prior-card:hover .action-btn::after{ left:-100%; }
-
   @media (max-width:768px){
       .page-title{ font-size:1.5rem; }
       .cards-grid{ grid-template-columns:1fr; max-width:420px; margin:0 auto 34px; }
@@ -200,7 +194,7 @@
   <div class="section-block">
       <div class="section-title"><span class="dot"></span><span>التعلم السابق</span></div>
       <div class="cards-grid single">
-          <div class="game-card prior-card" style="--theme-color:#f59e0b; --theme-color-shadow:rgba(245,158,11,0.35); --theme-color-light:rgba(245,158,11,0.15); --theme-bg-1:#fffbeb; --theme-bg-2:#fde68a;">
+          <a href="w-u1l1.html" class="game-card" style="--theme-color:#f59e0b; --theme-color-shadow:rgba(245,158,11,0.35); --theme-color-light:rgba(245,158,11,0.15); --theme-bg-1:#fffbeb; --theme-bg-2:#fde68a;">
               <div class="icon-wrapper">
                   <div class="icon-box">
                       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -215,8 +209,8 @@
               <span class="card-badge">مراجعة</span>
               <h2 class="game-title">راجع ما تعلمته سابقًا</h2>
               <p class="game-desc">لمحة سريعة عن المفاهيم الأساسية التي سيبنى عليها هذا الدرس قبل البدء بالتدريبات.</p>
-              <div class="action-btn"><span>قريبًا</span></div>
-          </div>
+              <div class="action-btn"><span>ابدأ المراجعة</span><svg viewBox="0 0 24 24"><path d="M20 12l-8-8v16l8-8z"/></svg></div>
+          </a>
       </div>
   </div>
 
